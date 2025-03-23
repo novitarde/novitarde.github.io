@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dress-Up Game Akun</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <!-- <link rel="stylesheet" href="ag.css"> -->
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background 1s ease-in-out;
+        }
+
+        .game-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .character-container {
+            position: relative;
+            width: 200px;
+            height: 400px;
+        }
+
+        .character {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .draggable {
+            width: 80px;
+            cursor: grab;
+            margin: 10px;
+        }
+
+        .options {
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body id="gameBody">
+    <h1>Dress-Up Game - Akun</h1>
+    <div class="game-container">
+        <div class="character-container">
+            <img src="https://cdn.discordapp.com/attachments/1321863414137749546/1353221298590978144/IMG_1925-removebg-preview.png?ex=67e0dd0b&is=67df8b8b&hm=56bdfbadb23ae04d62d9cfd4047ccbacb174aa09c66f97528655ee4c9d4c9a42&" alt="Character" class="character" id="character">
+        </div>
+    </div>
+    <div>
+        <h3>Choose a Mode:</h3>
+        <button onclick="changeMode('otaku')">Otaku Mode</button>
+        <button onclick="changeMode('gaming')">Gaming Mode</button>
+        <button onclick="changeMode('it')">Tech Mode</button>
+        <button onclick="changeMode()">Reset</button>
+    </div>
+</body>
+
+<!-- <script type="text/javascript" src="ag.js" crossorigin="anonymous"></script> -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const draggables = document.querySelectorAll(".draggable");
+        const gameContainer = document.querySelector(".character-container");
+
+        draggables.forEach(item => {
+            item.addEventListener("dragstart", dragStart);
+        });
+
+        gameContainer.addEventListener("dragover", dragOver);
+        gameContainer.addEventListener("drop", drop);
+
+        function dragStart(event) {
+            event.dataTransfer.setData("id", event.target.src);
+            event.dataTransfer.setData("type", event.target.dataset.type);
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const itemSrc = event.dataTransfer.getData("id");
+            const itemType = event.dataTransfer.getData("type");
+
+            let existingItem = document.querySelector(`.${itemType}`);
+            if (existingItem) {
+                existingItem.src = itemSrc;
+            } else {
+                let newItem = document.createElement("img");
+                newItem.src = itemSrc;
+                newItem.classList.add("clothing", itemType);
+                newItem.style.position = "absolute";
+                newItem.style.top = "0";
+                newItem.style.left = "0";
+                newItem.style.width = "100%";
+                gameContainer.appendChild(newItem);
+            }
+        }
+    });
+
+    function changeMode(mode) {
+        let body = document.getElementById("gameBody");
+
+        if (mode === "otaku") {
+            body.style.backgroundImage = "url('https://i.pinimg.com/736x/79/33/ba/7933ba0efa210eecfbfe17a5429f3ced.jpg')";
+        } else if (mode === "gaming") {
+            body.style.backgroundImage = "url('https://i.pinimg.com/736x/37/6f/a4/376fa411e0f0b60195854ca3fe57f351.jpg')";
+        } else if (mode === "it") {
+            body.style.backgroundImage = "url('https://i.pinimg.com/736x/b5/9f/d5/b59fd5a9c1c30e4f08878e78a8538450.jpg')";
+        } else {
+            body.style.backgroundImage = "";
+        }
+    }
+
+</script>
